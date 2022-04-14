@@ -1,5 +1,6 @@
-package com.company;
+package com.company.classes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class Student extends Person implements Comparable<Student>
@@ -12,7 +13,7 @@ public class Student extends Person implements Comparable<Student>
 
     public Student() { }
 
-    public Student(String firstName, String lastName, String email, Address address, Date birthDate,
+    public Student(String firstName, String lastName, String email, Address address, LocalDate birthDate,
                    int studentId, List<Subject> subjects, Domain domain, Group group, HighSchool highSchool)
     {
         super(firstName, lastName, email, address, birthDate);

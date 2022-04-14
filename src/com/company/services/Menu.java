@@ -1,9 +1,9 @@
-package com.company;
+package com.company.services;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class Menu extends Service
+public class Menu
 {
     // singleton class for an interactive menu
 

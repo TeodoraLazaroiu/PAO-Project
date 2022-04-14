@@ -1,4 +1,6 @@
-package com.company;
+package com.company.classes;
+
+import java.time.LocalDate;
 
 public class Person
 {
@@ -6,11 +8,11 @@ public class Person
     protected String lastName;
     protected String email;
     protected Address address;
-    protected Date birthDate;
+    protected LocalDate birthDate;
 
     public Person() { }
 
-    public Person(String firstName, String lastName,String email, Address address, Date birthDate)
+    public Person(String firstName, String lastName,String email, Address address, LocalDate birthDate)
     {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,12 +61,12 @@ public class Person
         this.address = address;
     }
 
-    public Date getBirthDate()
+    public LocalDate getBirthDate()
     {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate)
+    public void setBirthDate(LocalDate birthDate)
     {
         this.birthDate = birthDate;
     }
