@@ -39,3 +39,33 @@ Choose an action.
 0: Exit
 -----------------------------------
 ```
+
+## ETAPA 2
+
+Adaugarea clasei **ReadWrite** pentru creare de fisiere CSV corespunzatoare claselor **Subject**, **Domain**, **Group** si **HighSchool** din care se citesc si in care se scriu date. Aceste fisiere sunt incarcate in program la inceputul acestuia iar datele introduse din meniul interactiv vor fi salvate permanent in aceste fisiere. Fisiere CSV au pe prima linie un header ce reprezinta metadate iar pe urmatoarele linii valori corespunzatoare obiectelor create.
+
+### Exemplu fisier pentru clasa **Domain**:
+
+```[python]
+name,years
+informatica,3
+matematica,3
+istorie,3
+biologie,3
+automatica,4
+litere,4
+```
+
+### Exemplu de afisare pentru clasa **Domain**:
+
+```[python]
+-----------------------------------
+4
+Domain: informatica, Number of years: 3
+Domain: matematica, Number of years: 3
+Domain: istorie, Number of years: 3
+Domain: biologie, Number of years: 3
+Domain: automatica, Number of years: 4
+Domain: litere, Number of years: 4
+-----------------------------------
+```
