@@ -32,4 +32,12 @@ public class Group
     {
         this.domain = domain;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Number: " + number + ", Domain: " + domain;
+    }
+
+    public String toCsv() { return number + "," + domain; }
 }

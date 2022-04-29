@@ -1,6 +1,8 @@
 package com.company.classes;
 
-public class Subject
+import java.io.Serializable;
+
+public class Subject implements Serializable
 {
     private String subjectName;
     private int mark;
@@ -37,5 +39,10 @@ public class Subject
     public String toString()
     {
         return "Subject: " + subjectName + ", Mark: " + mark;
+    }
+
+    public String toCsv()
+    {
+        return subjectName + "," + mark;
     }
 }
