@@ -62,4 +62,6 @@ public class Address
     {
         return city + ", " + county + ", " + street + ", " + number;
     }
+
+    public String toCsv() { return city + "," + county + "," + street + "," + number; }
 }

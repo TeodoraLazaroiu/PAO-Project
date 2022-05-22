@@ -1,6 +1,8 @@
 package com.company.classes;
 
-public class Domain
+import java.io.Serializable;
+
+public class Domain implements Serializable
 {
     private String name;
     private int numberOfYears;
@@ -32,4 +34,12 @@ public class Domain
     {
         this.numberOfYears = numberOfYears;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Domain: " + name + ", Number of years: " + numberOfYears;
+    }
+
+    public String toCsv() { return name + "," + numberOfYears; }
 }

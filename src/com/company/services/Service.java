@@ -12,13 +12,23 @@ import com.company.classes.Address;
 
 public class Service
 {
-    private final List<Subject> subjects = new ArrayList<>();
-    private final Set<Domain> domains = new HashSet();
-    private final List<Group> groups = new ArrayList<>();
-    private final List<HighSchool> highschools = new ArrayList<>();
-    private final List<Student> students = new ArrayList<>();
+    private static List<Subject> subjects = new ArrayList<>();
+    private static List<Domain> domains = new ArrayList<>();
+    private static List<Group> groups = new ArrayList<>();
+    private static List<HighSchool> highschools = new ArrayList<>();
+    private static List<Student> students = new ArrayList<>();
 
-    public void addSubject()
+    // functie ca incarca datele din fisierele csv
+    // in array-uri la inceputul programului
+    public static void loadData()
+    {
+        subjects = ReadWrite.readSubject();
+        domains = ReadWrite.readDomain();
+        groups = ReadWrite.readGroup();
+        highschools = ReadWrite.readHighSchool();
+    }
+
+    public Subject addSubject()
     {
         Scanner reader = new Scanner(System.in);
 
@@ -44,6 +54,8 @@ public class Service
 
         Subject sub = new Subject(subjectName, mark);
         subjects.add(sub);
+
+        return sub;
     }
 
     public void printSubjects()
@@ -63,7 +75,7 @@ public class Service
         }
     }
 
-    public void addDomain()
+    public Domain addDomain()
     {
         Scanner reader = new Scanner(System.in);
 
@@ -102,6 +114,8 @@ public class Service
 
         Domain dom = new Domain(domain, numberOfYears);
         domains.add(dom);
+
+        return dom;
     }
 
     public void printDomains()
@@ -121,7 +135,7 @@ public class Service
         }
     }
 
-    public void addGroup()
+    public Group addGroup()
     {
         Scanner reader = new Scanner(System.in);
 
@@ -146,6 +160,8 @@ public class Service
 
         Group g = new Group(domain, number);
         groups.add(g);
+
+        return g;
     }
 
     public void printGroups()
@@ -165,7 +181,7 @@ public class Service
         }
     }
 
-    public void addHighSchool()
+    public HighSchool addHighSchool()
     {
         Scanner reader = new Scanner(System.in);
 
@@ -177,6 +193,8 @@ public class Service
 
         HighSchool hs = new HighSchool(name, a);
         highschools.add(hs);
+
+        return hs;
     }
 
     public void printHighSchools()
@@ -196,7 +214,7 @@ public class Service
         }
     }
 
-    public void addStudent()
+    public Student addStudent()
     {
         Scanner reader = new Scanner(System.in);
 
@@ -364,6 +382,8 @@ public class Service
 
         Student s = new Student(firstName, lastName, email, a, d, studentId, subjects, domeniu, grupa, liceu);
         students.add(s);
+
+        return s;
     }
 
     public void printStudents()

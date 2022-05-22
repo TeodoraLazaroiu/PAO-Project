@@ -32,4 +32,12 @@ public class HighSchool
     {
         this.address = address;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Name: " + name + ", Address: " + address.toString();
+    }
+
+    public String toCsv() { return name + "," + address.toCsv(); }
 }

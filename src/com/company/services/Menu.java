@@ -1,6 +1,5 @@
 package com.company.services;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Menu
@@ -11,7 +10,10 @@ public class Menu
     private static final Service serviciu = new Service();
 
     // private constructor
-    private Menu() { }
+    private Menu()
+    {
+        serviciu.loadData();
+    }
 
     public static void showMenu()
     {
@@ -46,49 +48,49 @@ public class Menu
                 }
                 case 1:
                 {
-                    serviciu.addSubject();
+                    ReadWrite.writeSubject();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 2:
                 {
-                    serviciu.printSubjects();
+                    ReadWrite.readSubject();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 3:
                 {
-                    serviciu.addDomain();
+                    ReadWrite.writeDomain();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 4:
                 {
-                    serviciu.printDomains();
+                    ReadWrite.readDomain();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 5:
                 {
-                    serviciu.addGroup();
+                    ReadWrite.writeGroup();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 6:
                 {
-                    serviciu.printGroups();
+                    ReadWrite.readGroup();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 7:
                 {
-                    serviciu.addHighSchool();
+                    ReadWrite.writeHighSchool();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 8:
                 {
-                    serviciu.printHighSchools();
+                    ReadWrite.readHighSchool();
                     System.out.println("-----------------------------------");
                     break;
                 }
