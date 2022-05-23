@@ -1,5 +1,7 @@
 package com.company.services;
 
+import com.company.database.DatabaseConfiguration;
+
 public class Main
 {
 

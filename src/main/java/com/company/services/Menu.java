@@ -1,5 +1,7 @@
 package com.company.services;
 
+import com.company.database.DatabaseConfiguration;
+
 import java.util.Scanner;
 
 public class Menu
@@ -12,6 +14,7 @@ public class Menu
     // private constructor
     private Menu()
     {
+        serviciu.configureTables();
         serviciu.loadData();
     }
 
@@ -29,21 +32,26 @@ public class Menu
         System.out.println("8: Print all high schools");
         System.out.println("9: Add new student");
         System.out.println("10: Print all students");
-        System.out.println("11: Sort students by average grade");
+        System.out.println("11: Print students sorted by average grade");
         System.out.println("12: Average grade of a student");
+        System.out.println("13: Print student by a given id");
+        System.out.println("14: Update student name by a given id");
         System.out.println("0: Exit");
         System.out.println("-----------------------------------");
 
         Scanner reader = new Scanner(System.in);
-        int option = reader.nextInt();
+        int option;
 
-        while (option != 0)
+        do
         {
+            option = reader.nextInt();
+
             switch(option)
             {
                 case 0:
                 {
-                    System.out.println("Exiting program.");
+                    serviciu.closeConnection();
+                    System.out.println("Exiting program..");
                     break;
                 }
                 case 1:
@@ -60,37 +68,37 @@ public class Menu
                 }
                 case 3:
                 {
-                    ReadWrite.writeDomain();
+                    serviciu.addDomain();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 4:
                 {
-                    ReadWrite.readDomain();
+                    serviciu.printDomains();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 5:
                 {
-                    ReadWrite.writeGroup();
+                    serviciu.addGroup();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 6:
                 {
-                    ReadWrite.readGroup();
+                    serviciu.printGroups();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 7:
                 {
-                    ReadWrite.writeHighSchool();
+                    serviciu.addHighSchool();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 8:
                 {
-                    ReadWrite.readHighSchool();
+                    serviciu.printHighSchools();
                     System.out.println("-----------------------------------");
                     break;
                 }
@@ -108,13 +116,25 @@ public class Menu
                 }
                 case 11:
                 {
-                    serviciu.sortStudent();
+                    serviciu.printSortedStudent();
                     System.out.println("-----------------------------------");
                     break;
                 }
                 case 12:
                 {
                     serviciu.meanMarkStudent();
+                    System.out.println("-----------------------------------");
+                    break;
+                }
+                case 13:
+                {
+                    serviciu.printStudentById();
+                    System.out.println("-----------------------------------");
+                    break;
+                }
+                case 14:
+                {
+                    serviciu.updateStudent();
                     System.out.println("-----------------------------------");
                     break;
                 }
@@ -125,8 +145,8 @@ public class Menu
                 }
             }
 
-            option = reader.nextInt();
-        }
+        } while (option != 0);
+
         reader.close();
     }
 

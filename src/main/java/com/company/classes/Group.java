@@ -38,6 +38,4 @@ public class Group
     {
         return "Number: " + number + ", Domain: " + domain;
     }
-
-    public String toCsv() { return number + "," + domain; }
 }

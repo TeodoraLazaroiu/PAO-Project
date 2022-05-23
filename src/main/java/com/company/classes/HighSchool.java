@@ -38,6 +38,4 @@ public class HighSchool
     {
         return "Name: " + name + ", Address: " + address.toString();
     }
-
-    public String toCsv() { return name + "," + address.toCsv(); }
 }

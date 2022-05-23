@@ -60,8 +60,6 @@ public class Address
     @Override
     public String toString()
     {
-        return city + ", " + county + ", " + street + ", " + number;
+        return city + "," + county + "," + street + "," + number;
     }
-
-    public String toCsv() { return city + "," + county + "," + street + "," + number; }
 }

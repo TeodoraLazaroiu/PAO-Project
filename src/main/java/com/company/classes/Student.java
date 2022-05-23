@@ -13,8 +13,8 @@ public class Student extends Person implements Comparable<Student>
 
     public Student() { }
 
-    public Student(String firstName, String lastName, String email, Address address, LocalDate birthDate,
-                   int studentId, List<Subject> subjects, Domain domain, Group group, HighSchool highSchool)
+    public Student(int studentId, String firstName, String lastName, String email, Address address,
+                   LocalDate birthDate, List<Subject> subjects, Domain domain, Group group, HighSchool highSchool)
     {
         super(firstName, lastName, email, address, birthDate);
         this.studentId = studentId;
@@ -78,9 +78,9 @@ public class Student extends Person implements Comparable<Student>
     public String toString()
     {
         String s;
-        s = "\nFirst name: " + firstName + "\nLast name: " + lastName +
+        s = "\nStudent ID: " + studentId + "\nFirst name: " + firstName + "\nLast name: " + lastName +
                 "\nEmail: " + email + "\nAddress: " + address.toString() +
-                "\nBirth Date: " + birthDate.toString() + "\nStudent ID: " + studentId;
+                "\nBirth Date: " + birthDate.toString();
         for (Subject subject: subjects)
         {
             s = s + "\n" + subject.toString();
