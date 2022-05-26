@@ -12,7 +12,7 @@
 - **clasa Domain**: clasa pentru clasificarea studentilor din functie de domeniul de studiu
 - **clasa Group**: clasa pentru repartizarea studentilor in formatiuni de studiu
 
-![diagrama](diagrama.jpg)
+![diagrama](diagrama.png)
 
 Pe langa acestea programul mai cuprinde si clasele:
 - **clasa Service**: cuprinde toate functiile utile pentru realizarea comenzilor din meniu
