@@ -6,7 +6,6 @@ import com.company.services.ReadWrite;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.company.services.Service.*;
@@ -84,14 +83,14 @@ public class StudentRepository
                 date.toString() + "', \"" + domain + "\", " +
                 groupnumber + ", \"" + highschool + "\"";
 
-        String insertPersonSql = "INSERT INTO STUDENT(id, firstname, lastname, email, address, birthdate, " +
+        String insertStudentSql = "INSERT INTO STUDENT(id, firstname, lastname, email, address, birthdate, " +
                 "domain, groupnumber, highschool) VALUES(" + s + ");";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (Statement stmt = connection.createStatement())
         {
-            stmt.executeUpdate(insertPersonSql);
+            stmt.executeUpdate(insertStudentSql);
         }
         catch (SQLException e)
         {
@@ -173,6 +172,23 @@ public class StudentRepository
         }
     }
 
+    public void deleteStudentById(int id)
+    {
+        String deleteStudentSql = "DELETE FROM STUDENT WHERE id=?";
+
+        Connection connection = DatabaseConfiguration.getDatabaseConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteStudentSql))
+        {
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     private Student mapToStudent(ResultSet resultSet) throws SQLException
     {
         if (resultSet.next())
@@ -181,8 +197,6 @@ public class StudentRepository
             Address address = new Address(a[0], a[1], a[2], Integer.parseInt(a[3]));
 
             LocalDate date = LocalDate.parse(resultSet.getString(6));
-
-            List<Subject> subjects = new ArrayList<>();
 
             Domain dom = new Domain();
             String domeniu = resultSet.getString(7);
@@ -221,7 +235,7 @@ public class StudentRepository
             }
 
             return new Student(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
-                    resultSet.getString(4), address, date, subjects, dom, gr, highschool);
+                    resultSet.getString(4), address, date, dom, gr, highschool);
         }
         return null;
     }

@@ -2,6 +2,7 @@ package com.company.services;
 
 import com.company.database.DatabaseConfiguration;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -20,6 +21,9 @@ public class Service
     GroupRepository groupRepository = GroupRepository.getInstance();
     HighschoolRepository highschoolRepository = HighschoolRepository.getInstance();
     StudentRepository studentRepository = StudentRepository.getInstance();
+    SubjectRepository subjectRepository = SubjectRepository.getInstance();
+
+    AuditService auditService = AuditService.getInstance();
 
     // functie ca incarca datele din fisierele csv
     // in array-uri la inceputul programului
@@ -34,26 +38,63 @@ public class Service
 
         // salveaza din CSV in baza de date
         // daca aceasta este goala
+        subjectRepository.addData();
         domainRepository.addData();
         groupRepository.addData();
         highschoolRepository.addData();
         studentRepository.addData();
+
+        try
+        {
+            auditService.logAction("load data");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void configureTables()
     {
+        subjectRepository.createTable();
         domainRepository.createTable();
         groupRepository.createTable();
         highschoolRepository.createTable();
         studentRepository.createTable();
+
+        try
+        {
+            auditService.logAction("configure tables");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    public Subject addSubject()
+    public void addSubject()
     {
         Scanner reader = new Scanner(System.in);
 
+        System.out.print("Student ID: ");
+        int studentId;
+
+        while(true)
+        {
+            try
+            {
+                studentId = Integer.parseInt(reader.nextLine());
+                break;
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("Expecting an integer value. Try again!");
+                System.out.print("ID Student: ");
+            }
+        }
+
         System.out.print("Name of the subject: ");
-        String subjectName = reader.nextLine();
+        String subjectName = reader.nextLine().toUpperCase();
 
         int mark;
 
@@ -72,26 +113,31 @@ public class Service
             }
         }
 
-        Subject sub = new Subject(subjectName, mark);
-        subjects.add(sub);
+        subjects.add(new Subject(studentId, subjectName, mark));
+        ReadWrite.writeSubject(studentId, subjectName, mark);
+        subjectRepository.addSubject(studentId, subjectName, mark);
 
-        return sub;
+        try
+        {
+            auditService.logAction("add subject");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void printSubjects()
     {
-        if (subjects.isEmpty())
+        subjectRepository.displaySubjects();
+
+        try
         {
-            System.out.println("No existing subjects!");
+            auditService.logAction("print subjects");
         }
-        else
+        catch (IOException e)
         {
-            for (Subject s : subjects)
-            {
-                System.out.printf("Subject name: %s\n", s.getSubjectName());
-                System.out.printf("Student's mark: %s\n", s.getMark());
-                System.out.println();
-            }
+            e.printStackTrace();
         }
     }
 
@@ -101,6 +147,7 @@ public class Service
 
         System.out.print("Name of the domain: ");
         String domain = reader.nextLine();
+        domain = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
 
         System.out.print("Number of year for the domain: ");
         int numberOfYears;
@@ -122,11 +169,29 @@ public class Service
         domains.add(new Domain(domain, numberOfYears));
         ReadWrite.writeDomain(domain, numberOfYears);
         domainRepository.addDomain(domain, numberOfYears);
+
+        try
+        {
+            auditService.logAction("add domain");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void printDomains()
     {
         domainRepository.displayDomains();
+
+        try
+        {
+            auditService.logAction("print domains");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void addGroup()
@@ -135,6 +200,7 @@ public class Service
 
         System.out.print("Domain: ");
         String domain = reader.nextLine();
+        domain = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
 
         System.out.print("Group number: ");
         int number;
@@ -156,11 +222,29 @@ public class Service
         groups.add(new Group(domain, number));
         ReadWrite.writeGroup(domain, number);
         groupRepository.addGroup(domain, number);
+
+        try
+        {
+            auditService.logAction("add group");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void printGroups()
     {
         groupRepository.displayGroups();
+
+        try
+        {
+            auditService.logAction("print groups");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void addHighSchool()
@@ -169,6 +253,7 @@ public class Service
 
         System.out.print("High School name: ");
         String name = reader.nextLine();
+        name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
 
         System.out.print("Address of the high school: ");
         Address a = readAddress();
@@ -176,11 +261,29 @@ public class Service
         highschools.add(new HighSchool(name, a));
         ReadWrite.writeHighSchool(name, a);
         highschoolRepository.addHighschool(name, a);
+
+        try
+        {
+            auditService.logAction("add high school");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void printHighSchools()
     {
         highschoolRepository.displayHighschools();
+
+        try
+        {
+            auditService.logAction("print high schools");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void addStudent()
@@ -195,79 +298,55 @@ public class Service
             try
             {
                 studentId = Integer.parseInt(reader.nextLine());
-                break;
+
+                boolean check = true;
+                for (Student s : students)
+                {
+                    if (s.getStudentId() == studentId)
+                    {
+                        check = false;
+                        break;
+                    }
+                }
+
+                if (!check) throw new Exception();
+                else break;
             }
             catch (NumberFormatException e)
             {
                 System.out.println("Expecting an integer value. Try again!");
                 System.out.print("ID Student: ");
             }
+            catch (Exception e)
+            {
+                System.out.println("Student with given id already exists. Try again!");
+                System.out.print("ID Student: ");
+            }
         }
 
         System.out.print("First name: ");
         String firstName = reader.nextLine();
+        firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
 
         System.out.print("Last name: ");
         String lastName = reader.nextLine();
+        lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
 
         String email;
-        do
+        while(true)
         {
             System.out.print("Email: ");
-            email = reader.nextLine();
+            email = reader.nextLine().toLowerCase();
 
-        } while(!email.contains("@"));
+            if (!email.contains("@")) System.out.println("Not a valid email address! Try again!");
+            else break;
+        }
 
         System.out.print("Address: ");
         Address a = readAddress();
 
         System.out.print("Birth date: ");
         LocalDate d = readDate();
-
-        System.out.print("Number of subjects: ");
-        int n;
-
-        while(true)
-        {
-            try
-            {
-                n = Integer.parseInt(reader.nextLine());
-                break;
-            }
-            catch (NumberFormatException e)
-            {
-                System.out.println("Expecting an integer value. Try again!");
-                System.out.print("Number of subjects: ");
-            }
-        }
-
-        List<Subject> subjects = new ArrayList<>();
-
-        for (int i = 0; i < n; i ++)
-        {
-            System.out.print("Subject name: ");
-            String name = reader.nextLine();
-
-            System.out.print("Subject mark: ");
-            int mark;
-
-            while(true)
-            {
-                try
-                {
-                    mark = Integer.parseInt(reader.nextLine());
-                    break;
-                }
-                catch (NumberFormatException e)
-                {
-                    System.out.println("Expecting an integer value. Try again!");
-                    System.out.print("Subject mark: ");
-                }
-            }
-
-            Subject s = new Subject(name, mark);
-            subjects.add(s);
-        }
 
         Domain domeniu = new Domain();
         boolean check = true;
@@ -276,6 +355,7 @@ public class Service
         {
             System.out.print("Domain name: ");
             String domain = reader.nextLine();
+            domain = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
 
             for (Domain dom : domains)
             {
@@ -315,7 +395,7 @@ public class Service
 
             for (Group gr : groups)
             {
-                if (gr.getNumber() == g)
+                if (gr.getNumber() == g && domeniu.getName().equals(gr.getDomain()))
                 {
                     grupa = gr;
                     check = false;
@@ -334,6 +414,7 @@ public class Service
         {
             System.out.print("High School name: ");
             String h = reader.nextLine();
+            h = h.substring(0,1).toUpperCase() + h.substring(1).toLowerCase();
 
             for (HighSchool hs : highschools)
             {
@@ -350,16 +431,34 @@ public class Service
             }
         }
 
-        students.add(new Student(studentId, firstName, lastName, email, a, d, subjects, domeniu, grupa, liceu));
+        students.add(new Student(studentId, firstName, lastName, email, a, d, domeniu, grupa, liceu));
         ReadWrite.writeStudent(studentId, firstName, lastName, email, a, d,
                 domeniu.getName(), grupa.getNumber(), liceu.getName());
         studentRepository.addStudent(studentId, firstName, lastName, email, a, d,
                 domeniu.getName(), grupa.getNumber(), liceu.getName());
+
+        try
+        {
+            auditService.logAction("add student");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void printStudents()
     {
         studentRepository.displayStudents();
+
+        try
+        {
+            auditService.logAction("prints students");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void printStudentById()
@@ -390,6 +489,15 @@ public class Service
         else
         {
             System.out.println("No existing student with this id!");
+        }
+
+        try
+        {
+            auditService.logAction("print student by id");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -429,64 +537,92 @@ public class Service
 
             System.out.print("New first name: ");
             String firstName = reader.nextLine();
+            firstName = firstName.substring(0,1).toUpperCase() + firstName.substring(1).toLowerCase();
 
             System.out.print("New last name: ");
             String lastName = reader.nextLine();
+            lastName = lastName.substring(0,1).toUpperCase() + lastName.substring(1).toLowerCase();
 
             studentRepository.updateStudentFullName(firstName, lastName, studentId);
+            System.out.println("Student updated succesfully!");
         }
         else
         {
             System.out.println("No existing student with this id!");
         }
-    }
 
-    public void printSortedStudent()
-    {
-        Collections.sort(students);
-        System.out.println("Students succesfully sorted.");
-
-        for (Student s : students)
+        try
         {
-            System.out.println(s.toString());
-            System.out.println();
+            auditService.logAction("update student");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
-    public void meanMarkStudent()
+    public void deleteStudentById()
     {
         Scanner reader = new Scanner(System.in);
 
         System.out.print("Student ID: ");
-        int id;
+        int studentId;
 
         while(true)
         {
             try
             {
-                id = Integer.parseInt(reader.nextLine());
+                studentId = Integer.parseInt(reader.nextLine());
                 break;
             }
             catch (NumberFormatException e)
             {
                 System.out.println("Expecting an integer value. Try again!");
-                System.out.print("Group number: ");
+                System.out.print("Student ID: ");
             }
         }
 
         boolean check = false;
-        for (Student s: students)
+        for (Student s : students)
         {
-            if (s.getStudentId() == id)
+            if (studentId == s.getStudentId())
             {
-                System.out.printf("Mean grade: %f\n", s.meanMark());
                 check = true;
                 break;
             }
         }
-        if (!check)
+
+        if (check)
         {
-            System.out.println("No student found with this ID");
+            studentRepository.deleteStudentById(studentId);
+            System.out.println("Student deleted succesfully!");
+        }
+        else
+        {
+            System.out.println("No existing student with this id!");
+        }
+
+        try
+        {
+            auditService.logAction("delete student");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void printSortedStudents()
+    {
+        // stream and lambda expression
+        List<Student> sortedStudents = students.stream().
+                sorted(Comparator.comparing(Person::getLastName)).toList();
+
+        System.out.println("Students succesfully sorted.");
+
+        for (Student s : sortedStudents)
+        {
+            System.out.print(s.toString());
         }
     }
 
@@ -496,12 +632,15 @@ public class Service
 
         System.out.print("City: ");
         String city = reader.nextLine();
+        city = city.substring(0,1).toUpperCase() + city.substring(1).toLowerCase();
 
         System.out.print("County: ");
         String county = reader.nextLine();
+        county = county.substring(0,1).toUpperCase() + county.substring(1).toLowerCase();
 
         System.out.print("Street: ");
         String street = reader.nextLine();
+        street = street.substring(0,1).toUpperCase() + street.substring(1).toLowerCase();
 
         System.out.print("Number: ");
         int number;
@@ -584,5 +723,14 @@ public class Service
     public void closeConnection()
     {
         DatabaseConfiguration.closeDatabaseConnection();
+
+        try
+        {
+            auditService.logAction("close connection with database");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }

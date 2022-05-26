@@ -1,7 +1,6 @@
 package com.company.repository;
 
 import com.company.classes.Address;
-import com.company.classes.Domain;
 import com.company.classes.HighSchool;
 import com.company.database.DatabaseConfiguration;
 import com.company.services.ReadWrite;
@@ -71,14 +70,14 @@ public class HighschoolRepository
 
     public void addHighschool(String name, Address a)
     {
-        String insertPersonSql = "INSERT INTO HIGHSCHOOL(name, address) VALUES(\""
+        String insertSchoolSql = "INSERT INTO HIGHSCHOOL(name, address) VALUES(\""
                 + name + "\",\"" + a.toString() + "\");";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (Statement stmt = connection.createStatement())
         {
-            stmt.executeUpdate(insertPersonSql);
+            stmt.executeUpdate(insertSchoolSql);
         }
         catch (SQLException e)
         {

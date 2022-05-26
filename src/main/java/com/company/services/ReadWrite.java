@@ -13,9 +13,7 @@ import static com.company.services.Service.highschools;
 
 public class ReadWrite
 {
-    private static final Service serviciu = new Service();
-
-    public static void writeSubject()
+    public static void writeSubject(int studentId, String name, int mark)
     {
         String file = "src\\main\\java\\com\\company\\files\\subjects.csv";
         try
@@ -24,8 +22,7 @@ public class ReadWrite
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
-            Subject subject = serviciu.addSubject();
-            String subjectString = subject.toCsv();
+            String subjectString = studentId + "," + name + "," + mark;
             pw.println(subjectString);
 
             pw.flush();
@@ -35,15 +32,14 @@ public class ReadWrite
         {
             e.printStackTrace();
         }
-
     }
 
     public static List<Subject> readSubject()
     {
         List<Subject> subjects = new ArrayList<>();
         String file = "src\\main\\java\\com\\company\\files\\subjects.csv";
-        BufferedReader reader = null;
-        String line = "";
+        BufferedReader reader;
+        String line;
 
         try
         {
@@ -53,11 +49,11 @@ public class ReadWrite
             {
                 String[] row = line.split(",");
 
-                String name = row[0];
-                int number = Integer.parseInt(row[1]);
+                int studentId = Integer.parseInt(row[0]);
+                String name = row[1];
+                int mark = Integer.parseInt(row[2]);
 
-                Subject subject = new Subject(name, number);
-                subjects.add(subject);
+                subjects.add(new Subject(studentId, name, mark));
             }
 
             reader.close();
@@ -95,13 +91,13 @@ public class ReadWrite
     {
         List<Domain> domains = new ArrayList<>();
         String file = "src\\main\\java\\com\\company\\files\\domains.csv";
-        BufferedReader reader = null;
-        String line = "";
+        BufferedReader reader;
+        String line;
 
         try
         {
             reader = new BufferedReader(new FileReader(file));
-            line = reader.readLine();
+            reader.readLine();
             while((line = reader.readLine()) != null)
             {
                 String[] row = line.split(",");
@@ -109,8 +105,7 @@ public class ReadWrite
                 String name = row[0];
                 int years = Integer.parseInt(row[1]);
 
-                Domain domain = new Domain(name, years);
-                domains.add(domain);
+                domains.add(new Domain(name, years));
             }
 
             reader.close();
@@ -149,8 +144,8 @@ public class ReadWrite
     {
         List<Group> groups = new ArrayList<>();
         String file = "src\\main\\java\\com\\company\\files\\groups.csv";
-        BufferedReader reader = null;
-        String line = "";
+        BufferedReader reader;
+        String line;
 
         try
         {
@@ -202,8 +197,8 @@ public class ReadWrite
     {
         List<HighSchool> highschools = new ArrayList<>();
         String file = "src\\main\\java\\com\\company\\files\\highschools.csv";
-        BufferedReader reader = null;
-        String line = "";
+        BufferedReader reader;
+        String line;
 
         try
         {
@@ -261,8 +256,8 @@ public class ReadWrite
     {
         List<Student> students = new ArrayList<>();
         String file = "src\\main\\java\\com\\company\\files\\student.csv";
-        BufferedReader reader = null;
-        String line = "";
+        BufferedReader reader;
+        String line;
 
         try
         {
@@ -319,8 +314,7 @@ public class ReadWrite
                     }
                 }
 
-                List<Subject> subjects = new ArrayList<>();
-                Student s = new Student(id, firstName, lastName, email, a, date, subjects, dom, gr, highschool);
+                Student s = new Student(id, firstName, lastName, email, a, date, dom, gr, highschool);
 
                 students.add(s);
             }

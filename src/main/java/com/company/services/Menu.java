@@ -1,7 +1,5 @@
 package com.company.services;
 
-import com.company.database.DatabaseConfiguration;
-
 import java.util.Scanner;
 
 public class Menu
@@ -18,7 +16,7 @@ public class Menu
         serviciu.loadData();
     }
 
-    public static void showMenu()
+    private void showMenu()
     {
         System.out.println("-----------------------------------");
         System.out.println("Choose an action.");
@@ -32,116 +30,102 @@ public class Menu
         System.out.println("8: Print all high schools");
         System.out.println("9: Add new student");
         System.out.println("10: Print all students");
-        System.out.println("11: Print students sorted by average grade");
-        System.out.println("12: Average grade of a student");
-        System.out.println("13: Print student by a given id");
-        System.out.println("14: Update student name by a given id");
+        System.out.println("11: Print students sorted alphabetically");
+        System.out.println("12: Print student by a given id");
+        System.out.println("13: Update student name by a given id");
+        System.out.println("14: Delete student by a given id");
         System.out.println("0: Exit");
         System.out.println("-----------------------------------");
+    }
+
+    public void runMenu()
+    {
+        showMenu();
 
         Scanner reader = new Scanner(System.in);
         int option;
+        String check;
 
         do
         {
             option = reader.nextInt();
+            reader.nextLine();
 
-            switch(option)
-            {
-                case 0:
-                {
+            switch (option) {
+                case 0 -> {
                     serviciu.closeConnection();
                     System.out.println("Exiting program..");
-                    break;
                 }
-                case 1:
-                {
-                    ReadWrite.writeSubject();
+                case 1 -> {
+                    serviciu.addSubject();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 2:
-                {
-                    ReadWrite.readSubject();
+                case 2 -> {
+                    serviciu.printSubjects();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 3:
-                {
+                case 3 -> {
                     serviciu.addDomain();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 4:
-                {
+                case 4 -> {
                     serviciu.printDomains();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 5:
-                {
+                case 5 -> {
                     serviciu.addGroup();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 6:
-                {
+                case 6 -> {
                     serviciu.printGroups();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 7:
-                {
+                case 7 -> {
                     serviciu.addHighSchool();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 8:
-                {
+                case 8 -> {
                     serviciu.printHighSchools();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 9:
-                {
+                case 9 -> {
                     serviciu.addStudent();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 10:
-                {
+                case 10 -> {
                     serviciu.printStudents();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 11:
-                {
-                    serviciu.printSortedStudent();
+                case 11 -> {
+                    serviciu.printSortedStudents();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 12:
-                {
-                    serviciu.meanMarkStudent();
-                    System.out.println("-----------------------------------");
-                    break;
-                }
-                case 13:
-                {
+                case 12 -> {
                     serviciu.printStudentById();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                case 14:
-                {
+                case 13 -> {
                     serviciu.updateStudent();
                     System.out.println("-----------------------------------");
-                    break;
                 }
-                default:
-                {
-                    System.out.println("Invalid option. Try again.");
-                    break;
+                case 14 -> {
+                    serviciu.deleteStudentById();
+                    System.out.println("-----------------------------------");
+                }
+                default -> System.out.println("Invalid option. Try again.");
+            }
+
+            if (option != 0)
+            {
+                System.out.println("Do you want another action? y/n");
+                check = reader.nextLine();
+                check = check.toLowerCase();
+
+                if (check.equals("y")) showMenu();
+                else {
+                    option = 0;
+                    serviciu.closeConnection();
+                    System.out.println("Exiting program..");
                 }
             }
 

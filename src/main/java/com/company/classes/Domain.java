@@ -40,6 +40,4 @@ public class Domain implements Serializable
     {
         return "Domain: " + name + ", Number of years: " + numberOfYears;
     }
-
-    public String toCsv() { return name + "," + numberOfYears; }
 }

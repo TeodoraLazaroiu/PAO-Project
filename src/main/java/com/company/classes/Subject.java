@@ -4,15 +4,25 @@ import java.io.Serializable;
 
 public class Subject implements Serializable
 {
+    private int studentId;
     private String subjectName;
     private int mark;
 
     public Subject() { }
 
-    public Subject(String subjectName, int mark)
+    public Subject(int studentId, String subjectName, int mark)
     {
+        this.studentId = studentId;
         this.subjectName = subjectName;
         this.mark = mark;
+    }
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
     public String getSubjectName()
@@ -38,11 +48,6 @@ public class Subject implements Serializable
     @Override
     public String toString()
     {
-        return "Subject: " + subjectName + ", Mark: " + mark;
-    }
-
-    public String toCsv()
-    {
-        return subjectName + "," + mark;
+        return "Student ID: " + studentId + "\nSubject Name: " + subjectName + "\nMark: " + mark + "\n";
     }
 }

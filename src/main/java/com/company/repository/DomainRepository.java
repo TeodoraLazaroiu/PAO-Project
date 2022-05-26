@@ -69,14 +69,14 @@ public class DomainRepository
 
     public void addDomain(String name, int numberOfYears)
     {
-        String insertPersonSql = "INSERT INTO DOMAIN(name, numberOfYears) VALUES(\""
+        String insertDomainSql = "INSERT INTO DOMAIN(name, numberOfYears) VALUES(\""
                 + name + "\", " + numberOfYears + ");";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (Statement stmt = connection.createStatement())
         {
-            stmt.executeUpdate(insertPersonSql);
+            stmt.executeUpdate(insertDomainSql);
         }
         catch (SQLException e)
         {
