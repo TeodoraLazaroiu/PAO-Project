@@ -5,15 +5,14 @@
 **Tema proiectului**: implementarea unui sistem de gestiune al studentilor dintr-o facultate, vizualizarea datelor despre acestia cum ar fi: materiile si notele acestora, grupa si domeniul de studiu, liceul de unde provin si altele. Modelul va cuprinde următoarele clase: 
 
 - **clasa Address**: clasa pentru reprezentarea unei adrese a liceului sau pentru locul nasterii unei persoane
-- **clasa Date**: clasa pentru reprezentarea unei date calendaristice pentru data de nastere a unei persoane
 - **clasa Person**: clasa din care mosteneste clasa Student
 - **clasa Student**: clasa ce pastreaza datele despre studenti
 - **clasa HighSchool**: clasa ce cuprinde informatii despre liceul absolvit de student
-- **clasa Subject**: clasa pentru reprezentarea materiilor unei student
+- **clasa Subject**: clasa pentru reprezentarea materiilor si notelor unei student
 - **clasa Domain**: clasa pentru clasificarea studentilor din functie de domeniul de studiu
 - **clasa Group**: clasa pentru repartizarea studentilor in formatiuni de studiu
 
-![diagrama](diagrama.jpg)
+![diagrama](diagrama.png)
 
 Pe langa acestea programul mai cuprinde si clasele:
 - **clasa Service**: cuprinde toate functiile utile pentru realizarea comenzilor din meniu
@@ -34,8 +33,7 @@ Choose an action.
 8: Print all high schools
 9: Add new student
 10: Print all students
-11: Sort students by marks
-12: Average grade of a student
+11: Print students sorted
 0: Exit
 -----------------------------------
 ```
@@ -48,12 +46,13 @@ Adaugarea clasei **ReadWrite** pentru creare de fisiere CSV corespunzatoare clas
 
 ```[python]
 name,years
-informatica,3
-matematica,3
-istorie,3
-biologie,3
-automatica,4
-litere,4
+Informatica,3
+Matematica,3
+Istorie,3
+Biologie,3
+Automatica,4
+Litere,4
+Energetica,4
 ```
 
 ### Exemplu de afisare pentru clasa **Domain**:
@@ -61,11 +60,42 @@ litere,4
 ```[python]
 -----------------------------------
 4
-Domain: informatica, Number of years: 3
-Domain: matematica, Number of years: 3
-Domain: istorie, Number of years: 3
-Domain: biologie, Number of years: 3
-Domain: automatica, Number of years: 4
-Domain: litere, Number of years: 4
+Domain: Informatica, Number of years: 3
+Domain: Matematica, Number of years: 3
+Domain: Istorie, Number of years: 3
+Domain: Biologie, Number of years: 3
+Domain: Automatica, Number of years: 4
+Domain: Litere, Number of years: 4
+-----------------------------------
+```
+
+## ETAPA 3
+
+Configurarea unei baze de date cu JDBC si MySQL cu tabele corespunzatoare claselor **Domain**, **Group**, **Highschool**, **Subject** si **Student**. Pentru introducerea si modificarea datelor din tabele au fost create 5 clase de tip repository si singleton ce se conecteaza la baza de date.
+
+Tabela **Student** poate fi modificata folosind toate cele 4 operatii CRUD: create, read, update si delete. Toate operatiile din meniu au fost modificate pentru a persista datele atat in fisierele CSV, cat si in tabelele bazei de date. In meniu au fost adaugate urmatoarele functionalitati:
+
+```[python]
+-----------------------------------
+12: Print student by a given id
+13: Update student name by a given id
+14: Delete student by a given id
+0: Exit
+-----------------------------------
+```
+
+### Serviciu de audit
+
+Pentru inregistrarea tuturor actiunilor facute intr-o rulare a programului am implementant o clasa de tip singleton ce scrie toate operatiunile desfasurate intr-un fisier de tip CSV cu formatul **nume_actiune, timestamp**. Un exemplu de astfel de fisier:
+
+
+```[python]
+-----------------------------------
+configure tables,2022-05-26 16:36:08
+load data,2022-05-26 16:36:08
+add subject,2022-05-26 16:36:17
+print subjects,2022-05-26 16:36:25
+print domains,2022-05-26 16:36:28
+close connection with database,2022-05-26 16:36:37
 -----------------------------------
 ```

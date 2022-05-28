@@ -1,0 +1,6 @@
+id,firstname,lastname,email,city,county,street,number,birthdate,domain,group,highschool
+1,Teodora,Lazaroiu,teodora.lazaroiu@s.unibuc.ro,Curtea de Arges,Arges,Strada,1,2001-05-03,Informatica,241,Vlaicu Voda
+2,Maria,Iosif,maria.iosif@s.unibuc.ro,Constanta,Constanta,Strada,2,2001-07-16,Matematica,222,Mircea cel Batran
+3,Stefania,Gutu,stefania.gutu@s.unibuc.ro,Baicoi,Ploiesti,Strada,3,2001-07-13,Informatica,241,Mihai Viteazu
+4,Erol,Cherim,erol.cherim@s.unibuc.ro,Tulcea,Tulcea,Strada,4,1999-01-10,Energetica,2106,Grigore Moisil
+5,Raluca,Teodorescu,raluca.teodorescu@ase.csie.ro,Curtea de arges,Arges,Strada,10,2001-02-24,Cibernetica,1105,Vlaicu Voda
