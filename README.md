@@ -1,4 +1,4 @@
-# Student Management Systems
+# Student Management System
 
 ## ETAPA 1
 
